@@ -1,28 +1,33 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
+import { loadItem } from '../actions';
 
-const Nodes = (nodes, currentLanguage) => {
+const Nodes = (nodes, currentLanguage, handleClick) => {
     if(nodes != null && nodes.length) {
-        return <ul>{nodes.map(node=>Node(node, currentLanguage))}</ul>
+        return <ul>{nodes.map(node=>Node(node, currentLanguage, handleClick))}</ul>
     }
     else {
         return null;
     }
 }
 
-const Node = (node, currentLanguage) => (
+const Node = (node, currentLanguage, handleClick) => (
     <li key={node.id}>
         <div>
-            <Link to={`/content/${node.type}/${node.id}/${currentLanguage}/`}>{node.name}</Link>
-            {Nodes(node.children, currentLanguage)}
+            <Link to={`/content/${node.type}/${node.id}/${currentLanguage}/`} onClick={()=>handleClick(node)}>{node.name}</Link>
+            {Nodes(node.children, currentLanguage, handleClick)}
         </div>
     </li>
 );
 
-class ContentTree extends React.Component<{tree,currentLanguage}, {}> {
+class ContentTree extends React.Component<{tree,currentLanguage, dispatch}, {}> {
     render() {
-        return Nodes(this.props.tree, this.props.currentLanguage);
+        return Nodes(this.props.tree, this.props.currentLanguage, this.handleClick.bind(this));
+    }
+
+    handleClick(node) {
+      this.props.dispatch(loadItem(node.type, node.id, this.props.currentLanguage)); 
     }
 }
 

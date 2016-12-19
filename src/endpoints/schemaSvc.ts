@@ -9,8 +9,8 @@ function getSchema(type: 'category' | 'product') {
             }
         };
         const uiSchema = {
-            id: { 'ui:readonly': true },
-            description: { 'ui:widget': 'textarea' }
+            id: {"ui:widget": "hidden"},
+            description: { 'ui:widget': 'html' }
         };
         return { schema, uiSchema };
     }
@@ -40,8 +40,8 @@ function getSchema(type: 'category' | 'product') {
             }
         }
         const uiSchema = {
-            id: { 'ui:readonly': true },
-            description: { 'ui:widget': 'textarea' }
+            description: { 'ui:widget': 'html' },
+            id: {"ui:widget": "hidden"}
         };
         return { schema, uiSchema };
     }

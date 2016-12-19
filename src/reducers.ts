@@ -19,16 +19,16 @@ function languages(state = allLanguages, action) {
 
 function currentLanguage(state = defaultLanguage, action) {
   switch (action.type) {
+    // case actions.ITEM_LANGUAGE_LOAD:
+    //   return action.itemLanguage;
     case actions.LANGUAGE_CHANGE:
       return action.language;
-    case actions.ITEM_LANGUAGE_LOAD:
-      return action.itemLanguage;
     default:
       return state;
   }
 }
 
-function currentItem(state = { schema:null, data:null, language:defaultLanguage }, action) {
+function currentItem(state = { schema: null, data: null, language: defaultLanguage }, action) {
   switch (action.type) {
     case actions.ITEM_LOAD:
       const schema = getSchema(action.itemType);
@@ -53,7 +53,8 @@ function currentItem(state = { schema:null, data:null, language:defaultLanguage 
         const data = load(action.itemId, action.itemType, action.itemLanguage);
         return {
           ...state,
-          data: action.itemData
+          data,
+          language: action.itemLanguage
         };
       }
       else {
