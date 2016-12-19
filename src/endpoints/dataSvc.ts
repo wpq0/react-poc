@@ -1,0 +1,52 @@
+function getFakeData(id: string, type: 'category' | 'product') {
+    if (type === 'category') {
+        return {
+            id,
+            type,
+            name: { en: `Category ${id} EN`, sv: `Category ${id} SV` },
+            description: { en: `Description for category ${id} EN`, sv: `Description for category ${id} SV` }
+        }
+    }
+    else if (type === 'product') {
+        return {
+            id,
+            type,
+            name: { en: `Product ${id} EN`, sv: `Product ${id} SV` },
+            description: { en: `Description for product ${id} EN`, sv: `Description for product ${id} SV` },
+            colors: { en:['red', 'cyan'], sv:['röd', 'grön'] } ,
+            extendedAttributes: []
+        }
+    }
+    else {
+        return null;
+    }
+}
+
+function load(id: string, type: 'category' | 'product', language: string) {
+    const data = getFakeData(id, type);
+    return delocalize(data, language);
+}
+
+function save(id: string, type: string, language: string, data) {
+    var localized = localize(data, language);
+    // and merge with the blob with other languages
+    console.log(localized);
+}
+
+export function delocalize(data, language: string) {
+    // assume just 1 level of nesting
+    return Object.keys(data).reduce((acc, key) => {
+        acc[key] = data[key][language];
+        return acc;
+    }, {});
+}
+
+export function localize(data, language: string) {
+    // assume just 1 level of nesting
+    return Object.keys(data).reduce((res, key) => {
+        res[key] = { [language]:data[key] };
+        return  res;
+    }, {});
+}
+
+export { load, save };
