@@ -8,8 +8,7 @@ class ContentForm extends React.Component<{ fields:[{key, data, schema, uiSchema
     if (this.props.fields == null || this.props.fields.length == 0) {
       return (<span>Empty</span>);
     }
-    return (
-      <ul className='list-unstyled'>
+    return (<ul className='list-unstyled'>
       { Object.keys(this.props.fields).map(key=>(<li key={key}><ContentFormField {...this.props.fields[key] } field={key} /></li>))}
     </ul>);
   }
