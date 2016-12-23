@@ -27,17 +27,6 @@ export default function getSchema(type: 'category' | 'product'): CombinedSchema|
           type: 'array',
           title: 'Available colors',
           items: { type: 'string' }
-        },
-        extendedAttributes: {
-          type: 'array',
-          title: 'Attributes',
-          items: {
-            type: 'object',
-            properties: {
-              name: { type: 'string', title: 'Name' },
-              value: { type: 'string', title: 'Value' }
-            }
-          }
         }
       }
     }

@@ -10,18 +10,25 @@ class PreviewField extends React.Component<{ data, language, languages }, { lang
   state = { language: this.props.language };
 
   render() {
+    const data = this.props.data[this.state.language];
     return (<div className='col-md-4 preview'>
-      <div>{this.props.data[this.state.language]}</div>
-      <div className='btn-group'>{this.renderLanguageSelectors()}</div>
+      <div className='btn-group language-selector'>{this.renderLanguageSelectors()}</div>
+      <div>
+        { 
+          data instanceof Array
+            ? <ul>{data.map( (datum, index) => (<li key={index}>{datum}</li>))}</ul>
+            : <span>{data}</span>
+        }
+      </div>
     </div>);
   }
 
   renderLanguageSelectors() {
     return (this.props.languages.map(language =>
       <a key={language.key}
-         className={`btn btn-xs btn-default ${(language.key !== this.state.language ? '' : 'disabled')}`}
+         className={`btn btn-xs btn-default ${(language.key === this.state.language ? 'active' : '')}`}
          onClick={()=>this.setState({language: language.key})}>
-        {language.title}
+         <span className={`flag flag-${language.key}`}></span>
       </a>));
   }
 }
@@ -35,18 +42,18 @@ function CustomFieldTemplate(props: {id, classNames, label, help, required, desc
   );
 }
 
-
 class ContentFormField extends React.Component<{ languages, language, data, schema, uiSchema, editing, field, dispatch }, {}> {
   renderLanguageSelectors() {
     return (this.props.languages.map(language =>
       <a key={language.key}
-        className={`btn btn-xs btn-default ${(language.key !== this.props.language ? '' : 'disabled')}`}
+        className={`btn btn-xs btn-default ${(language.key === this.props.language ? 'active' : '')}`}
         onClick={() => this.props.dispatch(actions.changeFieldLanguage(language.key, this.props.field))}>
-        {language.title}
+        <span className={`flag flag-${language.key}`}></span>
       </a>));
   }
 
   render() {
+    const data = this.props.data[this.props.language];
     if (this.props.uiSchema && this.props.uiSchema['ui:widget'] === 'hidden') {
       return null;
     }
@@ -60,9 +67,10 @@ class ContentFormField extends React.Component<{ languages, language, data, sche
             onClick={() => this.props.dispatch(actions.toggleFieldEdit(this.props.field))}>Edit</a>
         </div>
         <div className='col-md-5 edit'>
+          <div className='btn-group language-selector'>{this.renderLanguageSelectors()}</div>
           <Form schema={this.props.schema}
             uiSchema={this.props.uiSchema}
-            formData={this.props.data[this.props.language]}
+            formData={data}
             widgets={{ html: HtmlEditorWidget }}
             FieldTemplate={CustomFieldTemplate}
             onChange={log("changed")}
@@ -70,7 +78,6 @@ class ContentFormField extends React.Component<{ languages, language, data, sche
             onError={log("errors")}>
             <span></span>
           </Form>
-          <div className='btn-group'>{this.renderLanguageSelectors()}</div>
         </div>
         <PreviewField languages={this.props.languages} language={this.props.language} data={this.props.data} />
       </div>);
@@ -85,7 +92,12 @@ class ContentFormField extends React.Component<{ languages, language, data, sche
             onClick={() => this.props.dispatch(actions.toggleFieldEdit(this.props.field))}>Edit</a>
         </div>
         <div className='col-md-9'>
-          <span>{this.props.data[this.props.language]}</span>
+          { 
+            data instanceof Array
+              ? <ul>{data.map( (datum, index) => (<li key={index}>{datum}</li>))}</ul>
+              : <span>{data}</span>
+          }
+          
         </div>
       </div>);
     }

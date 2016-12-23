@@ -1,0 +1,31 @@
+.flag {
+  display: inline-block;
+  width: 16px;
+  height: 11px;
+  background: url('flags.png') no-repeat;
+}
+
+.flag.flag-sv {
+  background-position: -16px 0;
+}
+
+.flag.flag-en {
+  background-position: 0 0;
+}
+
+.field-container {
+  padding: 0.5rem 0;
+  border-bottom: 1px solid lightgray;
+}
+
+.language-selector {
+  margin-bottom: 0.5rem;
+}
+
+.field-array legend {
+  display: none;
+}
+
+.btn .flag {
+  margin-right: 0.25rem;
+}

@@ -7,20 +7,20 @@ class App extends React.Component<{}, {}> {
   render() {
     return (
       <div>
-        <header className='container'>
+        <header className='container-fluid'>
           <h4>React POC</h4>
         </header>
-        <div className='container'>
+        <div className='container-fluid'>
           <div className="row">
-            <aside className="col-sm-4 col-md-3">
+            <aside className="col-sm-3 col-md-2">
               <ContentTree></ContentTree>
             </aside>
-            <main className="col-sm-8 col-md-9">
+            <main className="col-sm-9 col-md-10">
               {this.props.children}
             </main>
           </div>
         </div>
-        <footer>~</footer>
+        <footer className='container-fluid'>~</footer>
       </div>
     );
   }

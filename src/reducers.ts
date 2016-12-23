@@ -1,7 +1,7 @@
 import { combineReducers } from 'redux';
 import { routerReducer as routing, LOCATION_CHANGE } from 'react-router-redux';
 import * as actions from './actions';
-import { load, save, delocalize } from './endpoints/dataSvc';
+import { load, save } from './endpoints/dataSvc';
 import getSchema from './endpoints/schemaSvc';
 import getTree from './endpoints/treeSvc';
 import getLanguages from './endpoints/languageSvc';
@@ -60,7 +60,6 @@ function currentItem(state = {}, action) {
         }
       };
     case actions.ITEM_FIELD_CHANGE_LANGUAGE:
-
       return {
         ...state, 
         [action.field]: { 
