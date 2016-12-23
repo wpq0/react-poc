@@ -3,33 +3,32 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import { loadItem } from '../actions';
 
-const Nodes = (nodes, currentLanguage, handleClick) => {
+const Nodes = (nodes, onNodeClick) => {
     if(nodes != null && nodes.length) {
-        return <ul>{nodes.map(node=>Node(node, currentLanguage, handleClick))}</ul>
+        return <ul>{nodes.map(node=>Node(node, onNodeClick))}</ul>
     }
     else {
         return null;
     }
 }
 
-const Node = (node, currentLanguage, handleClick) => (
+const Node = (node, onNodeClick) => (
     <li key={node.id}>
         <div>
-            <Link to={`/content/${node.type}/${node.id}/${currentLanguage}/`} onClick={()=>handleClick(node)}>{node.name}</Link>
-            {Nodes(node.children, currentLanguage, handleClick)}
+            <Link to={`/content/${node.type}/${node.id}/`} onClick={()=>onNodeClick(node)}>{node.name}</Link>
+            {Nodes(node.children, onNodeClick)}
         </div>
     </li>
 );
 
-class ContentTree extends React.Component<{tree,currentLanguage, dispatch}, {}> {
+class ContentTree extends React.Component<{tree, dispatch}, {}> {
     render() {
-        return Nodes(this.props.tree, this.props.currentLanguage, this.handleClick.bind(this));
+        return Nodes(this.props.tree, this.onNodeClick.bind(this));
     }
 
-    handleClick(node) {
-      this.props.dispatch(loadItem(node.type, node.id, this.props.currentLanguage)); 
+    onNodeClick(node) {
+      this.props.dispatch(loadItem(node.type, node.id)); 
     }
 }
 
-const ConnectedContentTree = connect(state=>({tree:state.tree, currentLanguage: state.currentLanguage}))(ContentTree);
-export default ConnectedContentTree;
+export default connect(state=>({tree:state.tree}))(ContentTree);

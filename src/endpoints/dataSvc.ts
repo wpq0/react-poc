@@ -23,14 +23,13 @@ function getFakeData(id: string, type: 'category' | 'product') {
 }
 
 function load(id: string, type: 'category' | 'product', language: string) {
+  // [ { schema, uiSchema, data } ]
   const data = getFakeData(id, type);
-  return { ...delocalize(data, language), language };
+  return data;
 }
 
 function save(id: string, type: string, language: string, data) {
-  var localized = localize(data, language);
-  // and merge with the blob with other languages
-  console.log(localized);
+  console.log(data);
 }
 
 export function delocalize(data, language: string) {

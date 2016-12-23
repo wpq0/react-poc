@@ -1,4 +1,4 @@
-type node = {
+declare type node = {
   id: number,
   type: 'category' | 'product',
   name: string,
@@ -61,8 +61,6 @@ const data: node[] = [
   },
 ];
 
-function getTree(): node[] {
+export default function getTree(): node[] {
   return data;
 };
-
-export default getTree;

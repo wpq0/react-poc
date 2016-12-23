@@ -1,7 +1,7 @@
 import { combineReducers } from 'redux';
 import { routerReducer as routing, LOCATION_CHANGE } from 'react-router-redux';
 import * as actions from './actions';
-import { load, save } from './endpoints/dataSvc';
+import { load, save, delocalize } from './endpoints/dataSvc';
 import getSchema from './endpoints/schemaSvc';
 import getTree from './endpoints/treeSvc';
 import getLanguages from './endpoints/languageSvc';
@@ -28,38 +28,46 @@ function currentLanguage(state = defaultLanguage, action) {
   }
 }
 
-function currentItem(state = { schema: null, data: null, language: defaultLanguage }, action) {
+function currentItem(state = {}, action) {
   switch (action.type) {
     case actions.ITEM_LOAD:
       const schema = getSchema(action.itemType);
       const data = load(action.itemId, action.itemType, action.itemLanguage);
-      return {
-        schema, data, language: action.itemLanguage
-      };
-    case actions.ITEM_SAVE:
-      if (state.schema != null) {
-        save(action.itemId, action.itemType, action.itemLanguage, action.itemData);
-        return {
-          ...state,
-          data: action.itemData
-        };
-      }
-      else {
-        return state;
-      }
 
-    case actions.ITEM_LANGUAGE_LOAD:
-      if (state.schema != null) {
-        const data = load(action.itemId, action.itemType, action.itemLanguage);
-        return {
-          ...state,
-          data,
-          language: action.itemLanguage
-        };
+      if (schema != null && data != null) {
+        return Object.keys(schema.data.properties)
+        .reduce((res, prop) => ({ 
+          ...res, 
+          [prop]: {
+            schema: schema.data.properties[prop],
+            uiSchema: schema.ui[prop],
+            language: defaultLanguage,
+            data: data[prop],
+            editing: false
+          } 
+        })
+        , {});
       }
       else {
         return state;
       }
+    case actions.ITEM_FIELD_TOGGLE_EDIT:
+      return { 
+        ...state, 
+        [action.field]: { 
+          ...state[action.field],
+          editing: !state[action.field].editing
+        }
+      };
+    case actions.ITEM_FIELD_CHANGE_LANGUAGE:
+
+      return {
+        ...state, 
+        [action.field]: { 
+          ...state[action.field],
+          language: action.language
+        }
+      };
     default:
       return state;
   }
