@@ -1,11 +1,6 @@
-declare type node = {
-  id: number,
-  type: 'category' | 'product',
-  name: string,
-  children?: node[]
-}
+import {ContentNode} from './../types';
 
-const data: node[] = [
+const data: ContentNode[] = [
   {
     id: 1,
     type: "category",
@@ -61,6 +56,6 @@ const data: node[] = [
   },
 ];
 
-export default function getTree(): node[] {
+export default function getTree(): ContentNode[] {
   return data;
 };

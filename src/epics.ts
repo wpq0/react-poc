@@ -1,6 +1,7 @@
 import { Observable } from 'rxjs';
-import { combineEpics } from 'redux-observable';
+import { Action } from 'redux';
+import { combineEpics, ActionsObservable } from 'redux-observable';
 
-export default function createEpics() {
+export default function createEpics(actions$: ActionsObservable<Action>) {
     return combineEpics();
 }

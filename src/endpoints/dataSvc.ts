@@ -1,4 +1,6 @@
-function getFakeData(id: string, type: 'category' | 'product') {
+import {ContentTypes, Content, LanguageKeys} from './../types';
+
+function getFakeData(id: string, type: ContentTypes):Content|null {
   if (type === 'category') {
     return {
       id,
@@ -21,12 +23,12 @@ function getFakeData(id: string, type: 'category' | 'product') {
   }
 }
 
-function load(id: string, type: 'category' | 'product', language: string) {
+function load(id: string, type: ContentTypes, language: LanguageKeys):Content|null {
   const data = getFakeData(id, type);
   return data;
 }
 
-function save(id: string, type: string, language: string, data) {
+function save(id: string, type: string, language: LanguageKeys, data: Content) {
   console.log(data);
 }
 

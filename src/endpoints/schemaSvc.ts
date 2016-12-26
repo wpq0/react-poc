@@ -1,9 +1,10 @@
-declare type CombinedSchema = { data: { type: string, properties: {} }, ui: {} };
+import {JsonSchema, ContentTypes, CombinedSchema} from './../types';
 
-export default function getSchema(type: 'category' | 'product'): CombinedSchema|null {
+export default function getSchema(type: ContentTypes): CombinedSchema|null {
   if (type === 'category') {
-    const data = {
+    const data:JsonSchema = {
       type: 'object',
+      title: 'Category',
       properties: {
         id: { type: 'string', title: 'Id' },
         name: { type: 'string', title: 'Name' },
@@ -19,6 +20,7 @@ export default function getSchema(type: 'category' | 'product'): CombinedSchema|
   else if (type === 'product') {
     const data = {
       type: 'object',
+      title: 'Product',
       properties: {
         id: { type: 'string', title: 'Id' },
         name: { type: 'string', title: 'Name' },
@@ -26,7 +28,7 @@ export default function getSchema(type: 'category' | 'product'): CombinedSchema|
         colors: {
           type: 'array',
           title: 'Available colors',
-          items: { type: 'string' }
+          items: { type: 'string', title:'Color' }
         }
       }
     }

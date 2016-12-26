@@ -1,9 +1,10 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
-import { loadItem } from '../actions';
+import actions from '../actions';
+import { ContentNode } from '../types';
 
-const Nodes = (nodes, onNodeClick) => {
+const Nodes = (nodes:ContentNode[]|undefined, onNodeClick: (node:ContentNode)=>any) => {
     if(nodes != null && nodes.length) {
         return <ul>{nodes.map(node=>Node(node, onNodeClick))}</ul>
     }
@@ -12,7 +13,7 @@ const Nodes = (nodes, onNodeClick) => {
     }
 }
 
-const Node = (node, onNodeClick) => (
+const Node = (node:ContentNode, onNodeClick: (node:ContentNode)=>any) => (
     <li key={node.id}>
         <div>
             <Link to={`/content/${node.type}/${node.id}/`} onClick={()=>onNodeClick(node)}>{node.name}</Link>
@@ -21,14 +22,10 @@ const Node = (node, onNodeClick) => (
     </li>
 );
 
-class ContentTree extends React.Component<{tree, dispatch}, {}> {
+class ContentTree extends React.Component<{tree} & typeof actions, {}> {
     render() {
-        return Nodes(this.props.tree, this.onNodeClick.bind(this));
-    }
-
-    onNodeClick(node) {
-      this.props.dispatch(loadItem(node.type, node.id)); 
+        return Nodes(this.props.tree, (node)=>this.props.loadItem(node.type, node.id));
     }
 }
 
-export default connect(state=>({tree:state.tree}))(ContentTree);
+export default connect(state=>({tree:state.tree}), actions)(ContentTree);
